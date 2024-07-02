@@ -21,6 +21,7 @@ if len(desc_files) == 0 or len(desc_files[0]) == 0:
 	desc_files = ['extensions/quack/description.yml']
 	deploy = False
 
+
 desc_file = desc_files[0]
 
 with open(desc_file, 'r') as stream:
