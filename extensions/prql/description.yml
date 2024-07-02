@@ -5,9 +5,11 @@ extension:
   language: C++
   build: cmake
   license: MIT
+  excluded_platforms: "linux_arm64"
   maintainers:
     - ywelsch
 
+
 repo:
-  github: ywelsch/duckdb-prql
-  ref: 5ffedaf6d7ec41e94217b4039d7151dca358ef04
+  github: samansmink/duckdb-prql
+  ref: f1acb4a5d44c4f25bfffa0c396721418dbf61c1f

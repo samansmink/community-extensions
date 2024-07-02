@@ -36,20 +36,21 @@ jobs:
 
   build:
     needs: prepare
-    uses: ./.github/workflows/_extension_distribution.yml
+    uses: samansmink/extension-ci-tools/.github/workflows/_extension_distribution.yml@add-support-for-community-extensions
     if: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_NAME != '' }}
     with:
       duckdb_version: v1.0.0
+      enable_rust: true
       exclude_archs: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_EXCLUDE_PLATFORMS }}
       extension_name: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_NAME }}
-      repository: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_GITHUB }}
-      ref: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_REF }}
+      override_repository: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_GITHUB }}
+      override_ref: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_REF }}
 
   deploy:
     needs: 
       - prepare
       - build
-    uses: ./.github/workflows/_extension_deploy.yml
+    uses: samansmink/extension-ci-tools/.github/workflows/_extension_deploy.yml@add-support-for-community-extensions
     if: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_DEPLOY != '' }}
     secrets: inherit
     with:
@@ -57,6 +58,7 @@ jobs:
       duckdb_version: v1.0.0
       exclude_archs: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_EXCLUDE_PLATFORMS }}
       extension_name: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_NAME }}
-      repository: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_GITHUB }}
-      ref: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_REF }}
-
+      override_repository: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_GITHUB }}
+      override_ref: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_REF }}
+      core_nightly_deploy: false
+      community_deploy: true

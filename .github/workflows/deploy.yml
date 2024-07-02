@@ -31,11 +31,12 @@ jobs:
 
   build:
     needs: prepare
-    uses: ./.github/workflows/_extension_distribution.yml
+    uses: samansmink/extension-ci-tools/.github/workflows/_extension_distribution.yml@add-support-for-community-extensions
     strategy:
       matrix: ${{fromJson(needs.prepare.outputs.matrix)}}
     with:
       duckdb_version: v1.0.0
+      enable_rust: true
       extension_name: ${{ matrix.COMMUNITY_EXTENSION_NAME }}
       exclude_archs: 'wasm_mvp;wasm_eh;wasm_threads;windows_amd64_rtools'
       repository: ${{ matrix.COMMUNITY_EXTENSION_GITHUB }}
@@ -45,7 +46,7 @@ jobs:
     needs: 
       - prepare
       - build
-    uses: ./.github/workflows/_extension_deploy.yml
+    uses: samansmink/extension-ci-tools/.github/workflows/_extension_deploy.yml@add-support-for-community-extensions
     strategy:
       matrix: ${{fromJson(needs.prepare.outputs.matrix)}}
     secrets: inherit
@@ -54,7 +55,7 @@ jobs:
       duckdb_version: v1.0.0
       extension_name: ${{ matrix.COMMUNITY_EXTENSION_NAME }}
       exclude_archs: 'wasm_mvp;wasm_eh;wasm_threads;windows_amd64_rtools'
-      repository: ${{ matrix.COMMUNITY_EXTENSION_GITHUB }}
-      ref: ${{ matrix.COMMUNITY_EXTENSION_REF }}
-
-
+      override_repository: ${{ matrix.COMMUNITY_EXTENSION_GITHUB }}
+      override_ref: ${{ matrix.COMMUNITY_EXTENSION_REF }}
+      core_nightly_deploy: false
+      community_deploy: true
